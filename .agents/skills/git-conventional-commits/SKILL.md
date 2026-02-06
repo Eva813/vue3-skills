@@ -56,13 +56,53 @@ Reference this skill when you need to:
 ```bash
 # Invoke the skill when you have staged or unstaged changes
 # The skill will:
-# 1. Auto-detect commit type based on changes
-# 2. Prompt for subject line (max 50 chars)
-# 3. Optionally prompt for body (wrapped at 72 chars)
-# 4. Show formatted message for preview
-# 5. Request confirmation
-# 6. Execute git commit
+
+# 1. Analyze git status and changes
+#    - Shows what files are modified/added/deleted
+#    - Automatically stages appropriate files
+
+# 2. Auto-detect commit type based on changes
+#    - feat: New features (new files, new APIs)
+#    - fix: Bug fixes (fixes existing functionality)
+#    - docs: Documentation changes only
+#    - style: Formatting changes (no logic change)
+#    - refactor: Code restructuring (no logic change)
+#    - perf: Performance optimizations
+#    - test: Test additions/fixes
+#    - build: Build system/dependency changes
+#    - ci: CI/CD configuration changes
+#    - chore: Maintenance tasks
+
+# 3. Generate commit message
+#    - Subject line: "{type}: {description}" (max 50 chars)
+#    - Body (optional): Explains what and why
+#    - Follows all 7 rules of great commit messages
+
+# 4. **DISPLAY PREVIEW** - Shows formatted message
+#    ┌─────────────────────────────────┐
+#    │ GIT COMMIT MESSAGE PREVIEW       │
+#    ├─────────────────────────────────┤
+#    │ feat: Add user authentication    │
+#    │                                  │
+#    │ Implement JWT-based auth system  │
+#    │ with secure token handling and   │
+#    │ automatic refresh logic          │
+#    └─────────────────────────────────┘
+
+# 5. **REQUEST USER CONFIRMATION**
+#    - Mandatory: User must explicitly approve
+#    - Options: ✅ Confirm | ❌ Cancel | 🔧 Edit
+
+# 6. **EXECUTE COMMIT** (Only if confirmed)
+#    git commit -m "feat: Add user authentication" \
+#               -m "Implement JWT-based auth system..."
 ```
+
+## Important: Preview & Confirmation
+
+**This skill ALWAYS shows a preview and waits for explicit user confirmation before committing.**
+
+This prevents accidental commits and ensures quality control. The preview step is mandatory and cannot be skipped.
 
 ## Configuration
 
