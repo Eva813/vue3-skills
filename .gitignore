@@ -22,3 +22,8 @@ yarn-error.log
 # Build
 dist/
 build/
+
+# Temporary preview files (should be in session temp dir, but safety measure)
+.*_PREVIEW*
+.*_preview*
+.COMMIT*

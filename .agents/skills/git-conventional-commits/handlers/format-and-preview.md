@@ -8,7 +8,15 @@ tools: [ask_user]
 
 This handler is responsible for formatting and displaying the commit message in a way that users can clearly see and understand before confirmation.
 
-## Display Format
+## Display Format and Storage
+
+**File Storage Location**: `~/.copilot/session-state/{session_id}/commit_preview.txt`
+
+**Why session temporary directory?**
+- Does NOT pollute the project directory
+- Will NOT be tracked by git
+- Automatically cleaned up when session ends
+- User can easily locate it in their session folder
 
 The commit message MUST be displayed in a clear, readable format that shows:
 1. The complete subject line
@@ -19,7 +27,7 @@ The commit message MUST be displayed in a clear, readable format that shows:
 
 ```
 ════════════════════════════════════════════════════════════
-                    COMMIT MESSAGE PREVIEW
+                     COMMIT MESSAGE PREVIEW
 ════════════════════════════════════════════════════════════
 
 TYPE: SUBJECT
@@ -39,13 +47,14 @@ Files: 3 changed | +167 insertions | -6 deletions
 
 ### Display Rules
 
-1. **Header**: Section label "COMMIT MESSAGE PREVIEW"
-2. **Subject Line**: `{TYPE}: {SUBJECT}` on single line
-3. **Body Text**: Plain text, each line fully visible, no truncation
-4. **Statistics**: File counts and line changes
-5. **File List**: Simple bullet list of changed files
-6. **Format**: Plain text with simple line separators (no box drawing)
-7. **Whitespace**: Adequate line breaks for scannability
+1. **Storage**: Save to `~/.copilot/session-state/{session_id}/commit_preview.txt`
+2. **Header**: Section label "COMMIT MESSAGE PREVIEW"
+3. **Subject Line**: `{TYPE}: {SUBJECT}` on single line
+4. **Body Text**: Plain text, each line fully visible, no truncation
+5. **Statistics**: File counts and line changes
+6. **File List**: Simple bullet list of changed files
+7. **Format**: Plain text with simple line separators (no box drawing)
+8. **Whitespace**: Adequate line breaks for scannability
 
 ## Validation Before Display
 
@@ -61,7 +70,9 @@ Before displaying, validate:
 After clear display, use ask_user with these choices:
 
 ```
-Question: "Do you want to proceed with this commit?"
+Question: "Please review the commit message saved in 
+~/.copilot/session-state/{session_id}/commit_preview.txt
+Do you want to proceed with this commit?"
 
 Choices:
   - ✅ Yes, confirm and commit

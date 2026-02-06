@@ -78,25 +78,59 @@ Reference this skill when you need to:
 #    - Body (optional): Explains what and why
 #    - Follows all 7 rules of great commit messages
 
-# 4. **DISPLAY PREVIEW** - Shows formatted message
-#    ┌─────────────────────────────────┐
-#    │ GIT COMMIT MESSAGE PREVIEW       │
-#    ├─────────────────────────────────┤
-#    │ feat: Add user authentication    │
-#    │                                  │
-#    │ Implement JWT-based auth system  │
-#    │ with secure token handling and   │
-#    │ automatic refresh logic          │
-#    └─────────────────────────────────┘
+# 4. **DISPLAY PREVIEW** - Saves to session temporary directory
+#    Location: ~/.copilot/session-state/{session_id}/commit_preview.txt
+#    
+#    Content (plain text, fully readable):
+#    ════════════════════════════════════════════════════════════
+#    feat: Add user authentication
+#    
+#    Implement JWT-based auth system with secure token handling
+#    and automatic refresh logic. Prevents users from being logged
+#    out unexpectedly during long sessions.
+#    
+#    ────────────────────────────────────────────────────────────
+#    Files: 3 changed | +145 insertions | -8 deletions
+#    ════════════════════════════════════════════════════════════
+#    
+#    Benefits of using session temp directory:
+#    - Does NOT pollute your project directory
+#    - Will NOT be tracked by git
+#    - Automatically cleaned up when session ends
 
 # 5. **REQUEST USER CONFIRMATION**
+#    - User is asked: "Please review the commit message in
+#      ~/.copilot/session-state/{session_id}/commit_preview.txt
+#      Do you want to proceed?"
 #    - Mandatory: User must explicitly approve
-#    - Options: ✅ Confirm | ❌ Cancel | 🔧 Edit
+#    - Options: ✅ Yes, confirm and commit | ❌ No, cancel commit
 
 # 6. **EXECUTE COMMIT** (Only if confirmed)
+#    If user approves:
 #    git commit -m "feat: Add user authentication" \
 #               -m "Implement JWT-based auth system..."
+#    
+#    If user declines:
+#    Commit cancelled by user. (No changes made)
 ```
+
+## Important: Preview & Confirmation
+
+**This skill ALWAYS shows a preview and waits for explicit user confirmation before committing.**
+
+This prevents accidental commits and ensures quality control. The preview step is mandatory and cannot be skipped.
+
+**Preview File Location**: `~/.copilot/session-state/{session_id}/commit_preview.txt`
+- Automatically cleaned up when session ends
+- Not tracked by git
+- Easy to find in your session folder
+
+## Configuration
+
+- **Default Language**: English
+- **Commit Body**: Optional (automatically included when explaining "why" for complex changes)
+- **Message Validation**: All messages validated against 7 rules before committing
+- **Preview Storage**: Session temporary directory (not project directory)
 
 ## Important: Preview & Confirmation
 

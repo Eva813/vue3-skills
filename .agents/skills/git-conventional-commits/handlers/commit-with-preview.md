@@ -60,37 +60,50 @@ Create the commit message following Conventional Commits format:
 
 ### Phase 5: Display Preview and Request Confirmation
 
-Display the formatted message to the user in a clear, readable format:
+Save the formatted preview to the session temporary directory, then request user confirmation.
 
+**File Storage Location**: `~/.copilot/session-state/{session_id}/commit_preview.txt`
+
+**Why session temporary directory?**
+- ✅ Does NOT pollute the project directory
+- ✅ Will NOT be tracked by git
+- ✅ Automatically cleaned up when session ends
+- ✅ User can easily find it in their session folder
+- ✅ Prevents accidental commits into version control
+
+**Preview Format**:
 ```
-┌─────────────────────────────────────────────────────────┐
-│              📋 COMMIT MESSAGE PREVIEW                   │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│ {type}: {subject}                                       │
-│                                                          │
-│ {body line 1}                                           │
-│ {body line 2}                                           │
-│ {body line 3}                                           │
-│                                                          │
-├─────────────────────────────────────────────────────────┤
-│ 📊 Changes: {file count} files, {lines} insertions      │
-└─────────────────────────────────────────────────────────┘
+════════════════════════════════════════════════════════════
+                     COMMIT MESSAGE PREVIEW
+════════════════════════════════════════════════════════════
+
+{type}: {subject}
+
+{body line 1}
+{body line 2}
+{body line 3}
+
+────────────────────────────────────────────────────────────
+Files: X changed | +Y insertions | -Z deletions
+  • file1
+  • file2
+════════════════════════════════════════════════════════════
 ```
 
 **Display Implementation**:
-1. Use a clear box format with border characters (┌─┬┐│├┼┤└┴┘)
+1. Write preview file to: `~/.copilot/session-state/{session_id}/commit_preview.txt`
 2. Show full subject line at the top
-3. Show complete body text (all lines visible)
+3. Show complete body text (all lines visible, no truncation)
 4. Show statistics about changed files
 5. Leave adequate whitespace so text is readable
-6. Use emoji icons for visual clarity (📋 for preview, ✅/❌ for actions)
+6. Plain text format (no box drawing that might be truncated)
 
-**Then use ask_user tool** with explicit choices:
-- `✅ Confirm and commit`
-- `❌ Cancel commit`
+**Then use ask_user tool** with explicit choices and the file location in the question:
+- Question: "Please review the commit message in ~/.copilot/session-state/{session_id}/commit_preview.txt. Do you want to proceed?"
+- `✅ Yes, confirm and commit`
+- `❌ No, cancel commit`
 
-The user must be able to READ the entire commit message clearly in the terminal/UI before being asked to confirm.
+The user must be able to READ the entire commit message clearly before being asked to confirm.
 
 ### Phase 6: Execute Commit (Only if Confirmed)
 If user confirms, execute:
