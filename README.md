@@ -37,3 +37,6 @@ Check the `skill.md` file for more information.
 - [Vue 3 Official Documentation](https://vuejs.org/)
 - Composition API Guide
 - Common patterns and best practices
+- [anthropics claude-code](https://github.com/anthropics/claude-code/tree/main/plugins)
+- [anthropics skills](https://github.com/anthropics/skills/tree/main/skills)
+- [vercel agent-skills](https://github.com/vercel-labs/agent-skills)
